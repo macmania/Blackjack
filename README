@@ -11,13 +11,16 @@ Implementation of blackjack game that adheres to the following rules
 Design
 	Player class is an abstract class and 2 classes - human and dealer extends from the player class. This aims to be less repetitive and more re-usable since other classes can simply inherit the player class and add additional necessary methods
 	
-	The player class contains an enum of results that represent if that player has lost or won. The rules in governing if that player has lost or won is encapsulated inside of the player class inside the method of "addCard". The player class determines almost immedietely whether the player has lost or won. 
+	The player class contains an enum of results that represent if that player has lost or won. The rules in governing if that player has lost or won is encapsulated inside of the player class inside the method of "addCard". The player class determines almost immediately whether the player has lost or won. 
 
 	Cards class has its own methods that are similar in that it contains behaviors that are typical of how cards are dealt with. 
 
-	The cards class contains 2 types of enums - Officer and CardType that are aimed to improve readibility in understanding the 4 officer of cards are dealt with - King, Jack, Queen and Ace and the type of card. These 2 enums helps in showing the user what card he/she has been dealt with
+	The cards class contains 2 types of enums - Officer and CardType that are aimed to improve readability in understanding the 4 officer of cards are dealt with - King, Jack, Queen and Ace and the type of card. These 2 enums helps in showing the user what card he/she has been dealt with
 
 	The blackjack class contains the main method. It determines the logic of how the game operates. There are series of user input commands that determine whether the user wants to continue playing a game and whether the user wants to take a hit or deal. 
+
+Future changes
+      The blackjack game could be cleaned up a little more and the enums declared in Players and Cards should be initialized as private. However, the *tests.java produces errors since the enums are private. Note: this shouldn't be an issue since it is a unit test suite that tests validity of the players and cards classes. 
 
 Installation
 	cd to src, type make and type command "java Blackjack"
