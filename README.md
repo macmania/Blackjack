@@ -1,12 +1,12 @@
 Synopsis
 
-Implementation of blackjack game that adheres to the following rules: 
-	- there are only 2 players, the dealer and player
-	- if total of player or dealer's cards is over 21, then that player or dealer's cards that are 21 lost, also known as bust
-	- if total of player or dealers cards is equal then they tie
-	- if total of player or dealer's cards is equal to 21 then they win, given that both of them do not equal to 21
-	- dealer must continue to take a card/hit if total of his cards is less than 17
-	- player can choose to hit or deal
+Implementation of blackjack game that adheres to the following rules
+	* there are only 2 players, the dealer and player
+	* if total of player or dealer's cards is over 21, then that player or dealer's cards that are 21 lost, also known as bust
+	* if total of player or dealers cards is equal then they tie
+	* if total of player or dealer's cards is equal to 21 then they win, given that both of them do not equal to 21
+	* dealer must continue to take a card/hit if total of his cards is less than 17
+	* player can choose to hit or deal
 
 Design
 	Player class is an abstract class and 2 classes - human and dealer extends from the player class. This aims to be less repetitive and more re-usable since other classes can simply inherit the player class and add additional necessary methods
