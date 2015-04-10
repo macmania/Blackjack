@@ -10,7 +10,7 @@ public class Cards{
     private int sum;
 
 	public enum Officer{
-		KING(0), QUEEN(12), JACK(11), ACES(1);
+		KING(0), QUEEN(12), JACK(11), ACES(1), NORMALCARD(-1);
 
 		private int val; 
 		Officer(int i){ this.val = i; }
@@ -21,8 +21,8 @@ public class Cards{
 		    		case 12: return QUEEN; 
 		    		case 11: return JACK;
 		    		case 1: return ACES; 
+		    		default: return NORMALCARD;
 			}
-			return null;
 		}
 	}
 	
@@ -63,7 +63,7 @@ public class Cards{
 				sum += 10;
 				break;
 			default: 
-				sum += (sum % 13); 
+				sum += (cardValue % 13); 
 		}
 		printCard(c); //prints the type of card
 		System.out.println("total: " + sum); //prints the total in the next line
@@ -80,8 +80,11 @@ public class Cards{
 	public void printCard(int c){
 		Type typeCard = getTypeCard(c);
 		Officer officerCard = getOfficerTypeCard(c);
-
-		System.out.print(typeCard + ":" + officerCard + ", "); 
+		if(officerCard != Cards.Officer.NORMALCARD)
+			System.out.print(typeCard + ":" + officerCard + ", ");
+		else {
+			System.out.print(typeCard + ":" + (c%13) + ", ");
+		}
 	}
 
 	public void printCards() {

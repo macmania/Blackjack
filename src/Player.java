@@ -16,14 +16,6 @@ public abstract class Player{
 		public int getValue(){ return val; }	
 	} 
 
-	private enum Action{
-		HIT(0), STAND(1);
-		private int val; 
-
-		Action(int i) { val = i; }
-		public int getValue(){ return val; }
-	}
-
 	public Player(){
 		cards = new Cards(); 
 		result = PlayerResult.PLAY;
@@ -43,27 +35,6 @@ public abstract class Player{
 	public PlayerResult getResultPlayer(){
 		return result;
 	}
-	public abstract void addCard(int card); 
-}
-
-class Dealer extends Player{
-	public void setResult(PlayerResult r){ 
-		result = r; 
-	}
-	
-	public boolean isHit() { 
-		return (cards.getTotal() < 17); 
-	}
-
-
-	@Override
-	public void addCard(int card) {
-		// TODO Auto-generated method stub
-		//need to find more about this part
-	}
-}
-
-class Human extends Player{
 	
 	public void addCard(int card){
 		cards.addCard(card);
@@ -73,7 +44,18 @@ class Human extends Player{
 		else if(cards.getTotal() > 21){
 			result = PlayerResult.BUST;
 		}
+		else if(cards.getTotal() == 21){
+			result = PlayerResult.WIN;
+		}
 	}
-
 }
+
+class Dealer extends Player{
+	
+	public boolean isHit() { 
+		return (cards.getTotal() < 17); 
+	}
+}
+
+class Human extends Player{ }
 
