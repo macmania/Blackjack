@@ -5,7 +5,7 @@
 
 public abstract class Player{
 	
-	protected Cards cards;
+	private Cards cards;
 	protected PlayerResult result;
 
 	public enum PlayerResult{
@@ -32,12 +32,15 @@ public abstract class Player{
 	public int getTotal(){
 		return cards.getTotal();
 	}
+	
 	public PlayerResult getResultPlayer(){
 		return result;
 	}
 	
-	public void addCard(int card){
-		cards.addCard(card);
+	
+	
+	public void addCard(int card, boolean printFlag){
+		cards.addCard(card, printFlag);
 		if(cards.getNumberOfCards() == 2 && cards.getTotal() == 21){
 			result = PlayerResult.WIN;
 		}
@@ -47,13 +50,24 @@ public abstract class Player{
 		else if(cards.getTotal() == 21){
 			result = PlayerResult.WIN;
 		}
+		else{
+			result = PlayerResult.PLAY;
+		}
+	}
+	
+	public void setAcesValue(int aceValue){
+		cards.setAces(aceValue);
+	}
+	
+	public void clearCards(){
+		cards.clearCards();
 	}
 }
 
 class Dealer extends Player{
-	
+
 	public boolean isHit() { 
-		return (cards.getTotal() < 17); 
+		return (getTotal() < 17); 
 	}
 }
 

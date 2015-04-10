@@ -19,16 +19,16 @@ public class PlayerTest {
 	
 	@Test
 	public void testGetTotal(){
-		dealer.addCard(12); //This is a Queen
+		dealer.addCard(12, true); //This is a Queen
 		assertTrue(dealer.getTotal() == 10);
-		dealer.addCard(14); //This is a one 
+		dealer.addCard(14, true); //This is a one 
 		assertTrue(dealer.getTotal() == (10+1)); 
 		
 		System.out.println();
 		
-		human.addCard(10);
+		human.addCard(10, true);
 		assertTrue(human.getTotal() == 10);
-		human.addCard(5);
+		human.addCard(5, true);
 		assertTrue(human.getTotal() == 15);
 	}
 	
@@ -36,15 +36,15 @@ public class PlayerTest {
 	//Tests logic on who should win and lose
 	public void testWinBustLogic(){
 		assertTrue(((Dealer)dealer).isHit());
-		dealer.addCard(10); dealer.addCard(10); 
+		dealer.addCard(10, true); dealer.addCard(10, true); 
 		assertFalse(((Dealer)dealer).isHit());
 		
 		assertNotEquals(human.getResultPlayer(), Player.PlayerResult.WIN);
 		
-		human.addCard(6); human.addCard(10); human.addCard(5);
+		human.addCard(6, true); human.addCard(10, true); human.addCard(5, true);
 		assertEquals(human.getResultPlayer(), Player.PlayerResult.WIN);
 		
-		human.addCard(10);
+		human.addCard(10, true);
 		assertEquals(human.getResultPlayer(), Player.PlayerResult.BUST);
 	}
 

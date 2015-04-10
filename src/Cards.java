@@ -8,7 +8,8 @@ import java.util.ArrayList;
 public class Cards{
     private ArrayList<Integer> cards;
     private int sum;
-
+    private int acesValue; 
+    
 	public enum Officer{
 		KING(0), QUEEN(12), JACK(11), ACES(1), NORMALCARD(-1);
 
@@ -20,7 +21,7 @@ public class Cards{
 		    		case 0: return KING;
 		    		case 12: return QUEEN; 
 		    		case 11: return JACK;
-		    		case 1: return ACES; 
+		    		case 1: return ACES;
 		    		default: return NORMALCARD;
 			}
 		}
@@ -40,7 +41,9 @@ public class Cards{
 		    		case 2: return CLOVERS;
 		    		case 3: return PIKES; 
 		    }
-			return null;
+		    if(type == 4) return PIKES;
+			
+		    return null;
 		}
 	
 	}
@@ -53,7 +56,8 @@ public class Cards{
 		return sum;
 	}
 
-	public void addCard(int c){
+	//The printFlag can be used in the future 
+	public void addCard(int c, boolean printFlag){
 		cards.add(c);
 		int cardValue = c % 13;
 		Officer officer = Officer.getOfficerFromInt(cardValue);
@@ -62,11 +66,16 @@ public class Cards{
 			case KING: case QUEEN: case JACK: 
 				sum += 10;
 				break;
+			case ACES: 
+				sum += this.acesValue;
+				break;
 			default: 
-				sum += (cardValue % 13); 
+				sum += cardValue; 
 		}
-		printCard(c); //prints the type of card
-		System.out.println("total: " + sum); //prints the total in the next line
+		//if(printFlag){
+			printCard(c); //prints the type of card
+			System.out.println("total: " + sum); //prints the total in the next line
+		//}
 	}
 	
 	public Type getTypeCard(int c){
@@ -76,6 +85,7 @@ public class Cards{
 	public Officer getOfficerTypeCard(int c){
 		return Officer.getOfficerFromInt(c%13);
 	}
+	
 	
 	public void printCard(int c){
 		Type typeCard = getTypeCard(c);
@@ -98,4 +108,19 @@ public class Cards{
 	public int getNumberOfCards(){
 		return this.cards.size();
 	}
+	
+	public void setAces(int aceNum){
+		this.acesValue = aceNum;
+	}
+	
+	public int getAcesValue(){ 
+		return this.acesValue;
+	}
+	
+	public void clearCards(){
+		sum = 0; 
+		cards.clear();
+	}
+	
+	
 }

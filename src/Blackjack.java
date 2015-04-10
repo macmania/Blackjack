@@ -6,85 +6,148 @@ import java.util.Scanner;
 * Main class that initiates the logic of the game
 **/
 public class Blackjack{
-	static Player players[]; 
+	
+	//Made this an array because in the future, 
+	static Player human;
+	static Player dealer;
 	static Integer deckOfCards[];
 	public Blackjack(){	
-		players = new Player[2]; //the 0th player is the dealer
-		players[0] = new Dealer(); 
-		players[1] = new Human();
+		human = new Human(); 
+		dealer = new Dealer();
 
 		//Shuffle the deck
 		deckOfCards = new Integer[52];
-
-		for(int i=0; i < 52; i++){
-			deckOfCards[i] = i + 1; 
-		}
-
-		Collections.shuffle(Arrays.asList(deckOfCards));
+		shuffleCards();
+		
 	}
 
-	public static void main(String[] arg, int args){
+	public static void main(String[] args){
 		Scanner scan = new Scanner(System.in);
-		System.out.println(); 
-
-		int i, j=0;
-		String humanPlayerInput; 
+		 
+		int sessionNumber = 0, j=0;
+		String humanPlayerInput, acesValue; 
 		Player.PlayerResult result; 
 		Blackjack game = new Blackjack();
-
+		boolean continueSession = true, gameOver = false; 
 		
-		players[1].addCard(dealCard(j)); j++; 
-		players[1].addCard(dealCard(j)); j++; 
-		players[0].addCard(dealCard(j)); j++; 
-		players[0].addCard(dealCard(j)); j++; 		
-
+		while(continueSession){
+			if(j == 0 || continueSession)
+			{
+				System.out.println("Enter following number option for value of Aces:"
+						+ "\n1:Aces=1\n2:Aces=11\n");
+				while(!((acesValue = scan.nextLine()).equals("1")) && !acesValue.equals("2")){
+						System.out.println("Please enter appropriate answer\n");
+				}
+				game.setAces(Integer.parseInt(acesValue));
+				game.clearBoard();
+				j = 0; 
+				sessionNumber++;
+			}
+			System.out.println("Your cards:");
+			human.addCard(dealCard(j), true); j++; 
+			human.addCard(dealCard(j), true); j++; 
+			System.out.println("Dealer's cards:");
+			dealer.addCard(dealCard(j), false); j++; 
+			dealer.addCard(dealCard(j), false); j++; 		
 	
-		for(; j < 52; j++){
-			humanPlayerInput = scan.nextLine(); 
-			if(humanPlayerInput.equals("hit") && 
-					players[1].getResultPlayer() != Player.PlayerResult.WIN){
-				players[1].addCard(dealCard(j)); 
-				j++;
-			}
-
-			if(players[0] instanceof Dealer && ((Dealer)players[0]).isHit()) {
-				players[0].addCard(dealCard(j));
-				j++; 
-			}
-
-			result = players[0].getResultPlayer(); 
-			result = players[1].getResultPlayer(); 
 			
-			if( players[0].getResultPlayer() == Player.PlayerResult.BUST || //Dealer
-				players[1].getResultPlayer() == Player.PlayerResult.BUST || //Player
-				players[0].getResultPlayer() == Player.PlayerResult.WIN  || 
-				players[1].getResultPlayer() == Player.PlayerResult.WIN) {
-				break;
-			}
-		
-			if(players[0].getResultPlayer() == Player.PlayerResult.BUST && 
-						players[1].getResultPlayer() == Player.PlayerResult.BUST){
-					players[0].setPlayerResult(Player.PlayerResult.WIN); 
+			
+			for(; j < 52 && !dealer.getResultPlayer().equals(Player.PlayerResult.BUST)
+					&& !human.getResultPlayer().equals(Player.PlayerResult.BUST) && 
+					dealer.getTotal() != human.getTotal(); j++){
+				System.out.println("hit or deal");
+				
+				while(!(humanPlayerInput = scan.nextLine()).equalsIgnoreCase("hit") && !humanPlayerInput.equals("deal")){
+					System.out.println("Please type hit or deal\n");
+				} 
+				
+				if(humanPlayerInput.equals("hit") && 
+						human.getResultPlayer() != Player.PlayerResult.WIN){
+					System.out.println("Your cards:");
+					human.addCard(dealCard(j), true); 
+					j++;
+				}
+	
+				if(((Dealer)dealer).isHit()) {
+					System.out.println("Dealer's cards:");
+					dealer.addCard(dealCard(j), false);
+					j++; 
+				}
+	
+				result = dealer.getResultPlayer(); 
+				result = human.getResultPlayer(); 
+				
+				if( dealer.getResultPlayer() == Player.PlayerResult.BUST || //Dealer
+					human.getResultPlayer() == Player.PlayerResult.BUST || //Player
+					dealer.getResultPlayer() == Player.PlayerResult.WIN  || 
+					human.getResultPlayer() == Player.PlayerResult.WIN) {
 					break;
 				}
+			
+				if(dealer.getResultPlayer() == Player.PlayerResult.BUST && 
+							human.getResultPlayer() == Player.PlayerResult.BUST){
+						dealer.setPlayerResult(Player.PlayerResult.WIN); 
+						break;
+					}
+			}
+			
+			
+			//Need to print more information on who won. 
+			System.out.println("\n\nGame over for session:" + sessionNumber);
+			
+			
+			if(dealer.getTotal() == human.getTotal()){
+				System.out.println("A tie"); 
+			}
+			
+			else if((dealer.getResultPlayer() == Player.PlayerResult.BUST && human.getResultPlayer() == Player.PlayerResult.BUST)  
+					|| dealer.getResultPlayer() == Player.PlayerResult.WIN
+					|| (dealer.getResultPlayer() == Player.PlayerResult.PLAY && human.getResultPlayer() != Player.PlayerResult.WIN)
+					){
+				System.out.println("Dealer wins");
+			}
+			else if(human.getResultPlayer() == Player.PlayerResult.WIN
+					|| human.getResultPlayer() == Player.PlayerResult.PLAY){
+				System.out.println("You win\n");
+			}
+			
+			
+			System.out.print("Dealer's cards\n"); 
+			dealer.printCards(); 
+			System.out.println("\n");
+			System.out.print("Player: Human cards\n"); 
+			human.printCards(); 
+			
+			System.out.println("\nType \"continue\" to keep "
+					+ "playing another blackjack game session");
+			
+			
+			
+			continueSession = "continue".equals(scan.nextLine().toLowerCase()) ? true : false;
+			
 		}
-		
-		if(players[0].getTotal() == players[1].getTotal()){
-			System.out.println("A tie"); 
-		}
-		
-		//Need to print more information on who won. 
-		
-		System.out.print("Dealer's cards"); 
-		players[0].printCards(); 
-		
-		System.out.print("Player: Human cards"); 
-		players[1].printCards(); 
-
 	}
 
 	public static int dealCard(int i){
 		return deckOfCards[i];
+	}
+	
+	public static void setAces(int acesValue){
+		dealer.setAcesValue(acesValue);
+		human.setAcesValue(acesValue);
+	}
+	
+	public static void clearBoard(){
+		dealer.clearCards();
+		human.clearCards();
+		shuffleCards();
+	}
+	
+	public static void shuffleCards(){
+		for(int i=0; i < 52; i++){
+			deckOfCards[i] = i + 1; 
+		}
+		Collections.shuffle(Arrays.asList(deckOfCards));
 	}
 
 }
