@@ -20,7 +20,7 @@ Design
 	The blackjack class contains the main method. It determines the logic of how the game operates. There are series of user input commands that determine whether the user wants to continue playing a game and whether the user wants to take a hit or deal. 
 
 Installation
-	type make and type command "java Blackjack"
+	cd to src, type make and type command "java Blackjack"
 	
 Tests
 	Import the project and run the tests on eclipse
